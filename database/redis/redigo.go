@@ -6,9 +6,6 @@ import (
 	"time"
 )
 
-//var RedigoLogger io.Writer = os.Stdout
-//var RedigoErrorLogger io.Writer = os.Stderr
-
 type RedigoConfig struct {
 	Rawurl         string        `json:"rawurl"` // redis://:password@hostname:port/db_number
 	Hostname       string        `json:"hostname"`
