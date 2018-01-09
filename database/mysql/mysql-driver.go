@@ -33,3 +33,74 @@ func (mc *MySQLConfig) NewConnection() (mysqlCli MySQLCli, err error) {
 	mysqlCli.SetConnMaxLifetime(mc.ConnMaxLifetime)
 	return
 }
+
+/* 单个数据操作 */
+
+// 新增
+func (mc *MySQLCli) Insert(insertSQL string, args ...interface{}) (sql.Result, error) {
+	tx, err := mc.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	result, err := tx.Exec(insertSQL, args...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return result, nil
+}
+
+// 更新
+func (mc *MySQLCli) Update(updateSQL string, args ...interface{}) (sql.Result, error) {
+	tx, err := mc.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	result, err := tx.Exec(updateSQL, args...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return result, nil
+}
+
+// 删除
+func (mc *MySQLCli) Delete(deleteSQL string, args ...interface{}) (sql.Result, error) {
+	tx, err := mc.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	result, err := tx.Exec(deleteSQL, args...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return result, nil
+}
+
+// TODO 查询，不使用事务
+func (mc *MySQLCli) Query(selectSQL string, args ...interface{}) (*sql.Row, error) {
+	stm, err := mc.Prepare(selectSQL)
+	if err != nil {
+		return nil, err
+	}
+	defer stm.Close()
+	return stm.QueryRow(args...), nil
+}
+
+/* TODO 批量数据操作 */
