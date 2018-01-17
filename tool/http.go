@@ -12,16 +12,17 @@ import (
 // 优雅退出HTTP服务, server 创建的HTTP服务，timeout 超时时间，sig 需要监听的信号集合，可不填写
 func StartAndQuitHTTPGraceful(server *http.Server, timeout time.Duration, sig ...os.Signal) {
 
+	// 创建信号channel
+	quit := make(chan os.Signal)
+
 	// 启动服务
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
-			fmt.Fprintln(ErrorHandle, "启动服务失败：", err)
-			os.Exit(1)
+			fmt.Fprintln(ErrorHandle, "监听服务：", err)
+			quit <- os.Interrupt
 		}
 	}()
 
-	// 创建信号channel
-	quit := make(chan os.Signal)
 	// 监听信号，若不赋值，则监听所有信号
 	signal.Notify(quit, sig...)
 
