@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-type logger struct {
+type Logger struct {
 	debugLogger *log.Logger
 	traceLogger *log.Logger
 	infoLogger  *log.Logger
@@ -36,9 +36,7 @@ var errorOnce sync.Once
 var fatalOnce sync.Once
 var panicOnce sync.Once
 
-var Logger = &logger{}
-
-func (logger *logger) Debugf(format string, v ...interface{}) {
+func (logger *Logger) Debugf(format string, v ...interface{}) {
 	debugOnce.Do(func() {
 		fmt.Fprintln(DebugHandle, "debugOnce.Do init Debugf")
 		logger.debugLogger = log.New(DebugHandle, "[DEBUG]\t", log.LstdFlags|log.Lshortfile)
@@ -46,7 +44,7 @@ func (logger *logger) Debugf(format string, v ...interface{}) {
 	logger.debugLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Debug(v ...interface{}) {
+func (logger *Logger) Debug(v ...interface{}) {
 	debugOnce.Do(func() {
 		fmt.Fprintln(DebugHandle, "debugOnce.Do init Debug")
 		logger.debugLogger = log.New(DebugHandle, "[DEBUG]\t", log.LstdFlags|log.Lshortfile)
@@ -54,7 +52,7 @@ func (logger *logger) Debug(v ...interface{}) {
 	logger.debugLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Tracef(format string, v ...interface{}) {
+func (logger *Logger) Tracef(format string, v ...interface{}) {
 	traceOnce.Do(func() {
 		fmt.Fprintln(TraceHandle, "traceOnce.Do init Tracef")
 		logger.traceLogger = log.New(TraceHandle, "[TRACE]\t", log.LstdFlags|log.Lshortfile)
@@ -62,7 +60,7 @@ func (logger *logger) Tracef(format string, v ...interface{}) {
 	logger.traceLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Trace(v ...interface{}) {
+func (logger *Logger) Trace(v ...interface{}) {
 	traceOnce.Do(func() {
 		fmt.Fprintln(TraceHandle, "traceOnce.Do init Trace")
 		logger.traceLogger = log.New(TraceHandle, "[TRACE]\t", log.LstdFlags|log.Lshortfile)
@@ -70,7 +68,7 @@ func (logger *logger) Trace(v ...interface{}) {
 	logger.traceLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Infof(format string, v ...interface{}) {
+func (logger *Logger) Infof(format string, v ...interface{}) {
 	infoOnce.Do(func() {
 		fmt.Fprintln(InfoHandle, "infoOnce.Do init Infof")
 		logger.infoLogger = log.New(InfoHandle, "[INFO]\t", log.LstdFlags|log.Lshortfile)
@@ -78,7 +76,7 @@ func (logger *logger) Infof(format string, v ...interface{}) {
 	logger.infoLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Info(v ...interface{}) {
+func (logger *Logger) Info(v ...interface{}) {
 	infoOnce.Do(func() {
 		fmt.Fprintln(InfoHandle, "infoOnce.Do init Info")
 		logger.infoLogger = log.New(InfoHandle, "[INFO]\t", log.LstdFlags|log.Lshortfile)
@@ -86,7 +84,7 @@ func (logger *logger) Info(v ...interface{}) {
 	logger.infoLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Warningf(format string, v ...interface{}) {
+func (logger *Logger) Warningf(format string, v ...interface{}) {
 	warnOnce.Do(func() {
 		fmt.Fprintln(WarnHandle, "warnOnce.Do init WarningF")
 		logger.warnLogger = log.New(WarnHandle, "[WARNING]\t", log.LstdFlags|log.Lshortfile)
@@ -94,7 +92,7 @@ func (logger *logger) Warningf(format string, v ...interface{}) {
 	logger.warnLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Warning(v ...interface{}) {
+func (logger *Logger) Warning(v ...interface{}) {
 	warnOnce.Do(func() {
 		fmt.Fprintln(WarnHandle, "warnOnce.Do init Warning")
 		logger.warnLogger = log.New(WarnHandle, "[WARNING]\t", log.LstdFlags|log.Lshortfile)
@@ -102,7 +100,7 @@ func (logger *logger) Warning(v ...interface{}) {
 	logger.warnLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Errorf(format string, v ...interface{}) {
+func (logger *Logger) Errorf(format string, v ...interface{}) {
 	errorOnce.Do(func() {
 		fmt.Fprintln(ErrorHandle, "errorOnce.Do init Errorf")
 		logger.errorLogger = log.New(ErrorHandle, "[ERROR]\t", log.LstdFlags|log.Lshortfile)
@@ -110,7 +108,7 @@ func (logger *logger) Errorf(format string, v ...interface{}) {
 	logger.errorLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Error(v ...interface{}) {
+func (logger *Logger) Error(v ...interface{}) {
 	errorOnce.Do(func() {
 		fmt.Fprintln(ErrorHandle, "errorOnce.Do init Error")
 		logger.errorLogger = log.New(ErrorHandle, "[ERROR]\t", log.LstdFlags|log.Lshortfile)
@@ -118,7 +116,7 @@ func (logger *logger) Error(v ...interface{}) {
 	logger.errorLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Fatalf(format string, v ...interface{}) {
+func (logger *Logger) Fatalf(format string, v ...interface{}) {
 	fatalOnce.Do(func() {
 		fmt.Fprintln(FatalHandle, "fatalOnce.Do init Fatalf")
 		logger.fatalLogger = log.New(FatalHandle, "[FATAL]\t", log.LstdFlags|log.Lshortfile)
@@ -126,7 +124,7 @@ func (logger *logger) Fatalf(format string, v ...interface{}) {
 	logger.fatalLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Fatal(v ...interface{}) {
+func (logger *Logger) Fatal(v ...interface{}) {
 	fatalOnce.Do(func() {
 		fmt.Fprintln(FatalHandle, "fatalOnce.Do init Fatal")
 		logger.fatalLogger = log.New(FatalHandle, "[FATAL]\t", log.LstdFlags|log.Lshortfile)
@@ -134,7 +132,7 @@ func (logger *logger) Fatal(v ...interface{}) {
 	logger.fatalLogger.Output(2, fmt.Sprintln(v...))
 }
 
-func (logger *logger) Panicf(format string, v ...interface{}) {
+func (logger *Logger) Panicf(format string, v ...interface{}) {
 	panicOnce.Do(func() {
 		fmt.Fprintln(PanicHandle, "panicOnce.Do init Panicf")
 		logger.panicLogger = log.New(PanicHandle, "[PANIC]\t", log.LstdFlags|log.Lshortfile)
@@ -142,7 +140,7 @@ func (logger *logger) Panicf(format string, v ...interface{}) {
 	logger.panicLogger.Output(2, fmt.Sprintf(format, v...))
 }
 
-func (logger *logger) Panic(v ...interface{}) {
+func (logger *Logger) Panic(v ...interface{}) {
 	panicOnce.Do(func() {
 		fmt.Fprintln(PanicHandle, "panicOnce.Do init Panic")
 		logger.panicLogger = log.New(PanicHandle, "[PANIC]\t", log.LstdFlags|log.Lshortfile)
